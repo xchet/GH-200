@@ -1,5 +1,5 @@
 {
-    "name": "@OWNER/my-package",
+    "name": "@gh-200/my-package",
     "publishConfig": {
         "registry": "https://npm.pkg.github.com"
     }

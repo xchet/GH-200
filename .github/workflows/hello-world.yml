@@ -5,11 +5,13 @@ on:
     branches: [ main ]
 
 jobs:
-    hello-job:
-        runs-on: ubuntu-latest
+  hello-job:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Hello World
-              run: echo "Hello World!"
-            - name: Publish npm package
-              run: npm publish
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Hello World
+        run: echo "Hello World!"
+      - name: Publish npm package
+        run: npm publish

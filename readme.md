@@ -114,3 +114,21 @@ For GHCR (Docker Images)
 You explicitly login - ref: .github/workflows/ghcr.yml
 
 Build and publish a package
+
+This step is where code becomes an artifact.
+
+Publishing an npm package
+Step 1: Configure package.json
+
+{
+  "name": "@OWNER/my-package",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
+
+Step 2: Publish from GitHub Actions
+
+- name: Publish npm package
+  run: npm publish
+
