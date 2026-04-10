@@ -11,16 +11,11 @@ The 4 core components
 
 YAML Workflow structure
 
-Issue Tracker
-    .github/workflow/name.yml
-    Other directories/sub/sub1
-    Other2
-    .env
-    .lint
+File lives at .github/workflows/name.yml
+Key fields: on: (trigger event), jobs: (what to run), steps: (individual tasks). Use uses: for pre-built actions and run: for shell commands.
 
 Writing Workflows
-on push
-run echo "Hello world"
+Set trigger as on: push. Add one job. First step should always be uses: actions/checkout@v3 to pull repo code onto the runner. Add a second step with run: echo "Hello World" to confirm it works.
 
 # Build continuous integration (CI) workflows
 
@@ -41,8 +36,8 @@ Artifact appear on the workflow summary page for download
 
 Chain job with needs:
 i. By default all jobs run in parallel.
-ii. Use `need:build` - on a job to force it to wait for another.
-iii. Use `need:test`
+ii. Use `needs:build` - on a job to force it to wait for another.
+iii. Use `needs:test`
 
 Buils a three stage pipeline - build > test (`needs:test`) > report (`needs:report`)
 
@@ -57,3 +52,65 @@ Store and use Azure credentials
 In a repo >  Settings > Secrets and Varables > actions
 
 Status badges and artifact clean up
+
+Envrinment setup
+
+# Automate GitHub by using GitHub Script
+What is GitHu Scripts?
+the action that lets you write inline JS code indode your YAML - this calls HitHubs' OctoKit API directly.
+
+We have two key objects  - github and context
+1. github is the authenticated OctoKit client-  it  calls any GitHub API
+2. context - this is the event payload - (repo name, other details, etc)
+
+Common automation tasks
+Auto-comment - github.issues.createComment()
+Add label - github.rest.issues.addLabels()
+close stale issues - github.rest.issues.update({state: 'closed'})
+Post summary - uses:actions/
+
+Pass output 
+core.setOutput('mykey', value)
+
+${{steps.MY_STEP_ID.outputs.mykey}}
+
+# Leverage GitHub Actions to publish to GitHub packages
+
+What is Github pacakges?
+Is a packeage registry buillt directly into GitHub
+It allows you to store, version and share your software package in the same place where your source code already lives.
+
+Supported package types
+npm - JavaScript/TypeScript
+Maven - Java/JVM
+NuGet - .NET
+RudyGems
+Containers (via GitHub container registry) GHCR
+
+Access model
+Access is controlled by GitHub authentication
+Permission inheritance is from repository access/organization roles.
+No seaparate user account is needed - npmjs.org or Docker Hub
+
+Authenticate in the Workflow
+Authentication is where hitHub Packages really shines.
+
+GITHUB_TOKEN
+
+Every GitHub Actions workflow automatically gets: ${{ secret.GITHUB_TOKEN}}
+
+You do not need to:
+1. Create personal access tokens
+2. Store passwords
+3. Manage secrets manually (in most cases)
+
+This token:
+1. Is short-lived
+2. Is scoped to the repo
+3. Has permissions you define in the workflow
+
+For GHCR (Docker Images)
+
+You explicitly login - ref: .github/workflows/ghcr.yml
+
+Build and publish a package

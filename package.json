@@ -1,0 +1,6 @@
+{
+    "name": "@OWNER/my-package",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
+}
